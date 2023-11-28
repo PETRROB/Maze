@@ -3,9 +3,13 @@ from tkinter import *
 from time import strftime
 from tkinter import ttk
 from random import choice
+from tkinter import messagebox
+from PIL import ImageTk, Image
+
 
 
 LARGE_FONT_S = ("Arial", 26, "bold")
+LARGE_FONT_S_TITLE = ("Arial", 36, "bold")
 DIG_FONT_S = ("Arial", 24, "bold")
 DEF_FONT_S = ("Arial", 20)
 
@@ -22,33 +26,32 @@ def main_page():
     root.title("Labyrinth")
     root.geometry("800x800")
     root.resizable(0, 0)
-    root.configure(background='black')
+    imgTemp = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Pict.png")
+    imgTemp_bck = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Lab_bckgrd_01.jpg")
+    img2 = imgTemp.resize((800,800))
+    img3 = imgTemp_bck.resize((400,100))
+    img = ImageTk.PhotoImage(img2)
+    img_back = ImageTk.PhotoImage(img3)
 
-    text_label = tk.Label(root, text = "MAZE!!!",  bg="black", fg="yellow", font=DIG_FONT_S, borderwidth=0)
-    text_label.grid(row=1, column=2, sticky=tk.N )
+    label = Label(root,image=img)
+    label.pack(side='top',fill=Y)
 
-    # Center the buttons vertically
-    root.grid_rowconfigure(0, weight=1)
-    root.grid_rowconfigure(4, weight=1)
+    text_label = tk.Label(root, text="MAZE!!!", image=img_back, compound=tk.CENTER, fg="white", font = LARGE_FONT_S_TITLE, borderwidth=0)
+    text_label.place(x = 200, y = 50)
 
-    butt_start = tk.Button(root, text="START!", command=lambda: start_game(root), bg="black", fg="white", font=DIG_FONT_S, borderwidth=0)
-    butt_start.grid(row=2, column=2, sticky=tk.N + tk.S + tk.E + tk.W)
+    butt_start = tk.Button(root, text="START!", command=lambda: start_game(root),image=img_back, compound=tk.CENTER, fg="white", font=LARGE_FONT_S, borderwidth=0)
+    butt_start.place(x = 200, y = 250)
 
-    butt_score = tk.Button(root, text="SCORE BOARD!", command=lambda: score_board(root), bg=BILA, fg=BOARD, font=DIG_FONT_S, borderwidth=0)
-    butt_score.grid(row=3, column=2, sticky=tk.N + tk.S + tk.E + tk.W)
+    butt_score = tk.Button(root, text="SCORE BOARD!", command=lambda: score_board(root), image=img_back, compound=tk.CENTER, fg="white", font=LARGE_FONT_S, borderwidth=0)
+    butt_score.place(x = 200, y = 350)
 
-    butt_exit = tk.Button(root, text="EXECUTE THE GAME!", command=lambda: execute_game(root), bg="black", fg="white", font=DIG_FONT_S, borderwidth=0)
-    butt_exit.grid(row=4, column=2, sticky=tk.N + tk.S + tk.E + tk.W)
-
-    # Adjust column weights to center buttons horizontally
-    root.grid_columnconfigure(0, weight=1)
-    root.grid_columnconfigure(2, weight=1)
+    butt_exit = tk.Button(root, text="EXECUTE THE GAME!", command=lambda: execute_game(root), image=img_back, compound=tk.CENTER, fg="white", font=LARGE_FONT_S, borderwidth=0)
+    butt_exit.place(x = 200, y = 450)
 
     # Create a label for the time
-    time_label = tk.Label(root, font=DEF_FONT_S, bg="black", fg="white")
-    time_label.grid(row=999, column=3, sticky=tk.SE, padx=0, pady=0)
-
-    # Start updating the time
+    time_label = tk.Label(root, font=LARGE_FONT_S, bg="black", fg="white")
+    time_label.place(x = 595, y = 755)
+        # Start updating the time
     update_time(time_label)
 
     root.mainloop()
@@ -58,22 +61,35 @@ def start_game(root):
     # Function to close the current window and open a new window with a text box
     root.destroy()  # Close the current window
 
+    show_popup()
     # Create a new window
     new_window = tk.Tk()
     new_window.title("Labyrinth")
     new_window.geometry("800x800")
     new_window.resizable(0, 0)
-    new_window.configure(background='black')
+    
 
-    # Add a text box to the new window
-    text_box = tk.Text(new_window, height=1, width=30, font=DIG_FONT_S)
-    text_box.pack()
+    imgTemp = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Pict.png")
+    imgTemp_bck = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Lab_bckgrd_01.jpg")
+    img2 = imgTemp.resize((800,800))
+    img3 = imgTemp_bck.resize((400,100))
+    img = ImageTk.PhotoImage(img2)
+    img_back = ImageTk.PhotoImage(img3)
 
-    butt_sendText = tk.Button(new_window, text="Next", command=lambda: diff_choice(new_window, text_box), bg="black", fg="white", font=DIG_FONT_S, borderwidth=0)
-    butt_sendText.pack()
+    label = Label(new_window,image=img)
+    label.place(x = 0, y = 0)
+    #label.pack(side='top',fill=Y)
 
-    butt_Back = tk.Button(new_window, text="Back!", command=lambda: go_back_from_play(new_window), bg="black", fg="yellow", font=DIG_FONT_S, borderwidth=0)
-    butt_Back.pack()
+    text_box = tk.Text(new_window, height=1, width=32, font=DIG_FONT_S)
+    text_box.place(x = 100, y = 100)
+
+    
+
+    butt_sendText = tk.Button(new_window, text="Next", command=lambda: diff_choice(new_window, text_box),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_sendText.place(x = 200, y = 200)
+
+    butt_Back = tk.Button(new_window, text="Back!", command=lambda: go_back_from_play(new_window), image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Back.place(x = 200, y = 300)
 
     new_window.mainloop()
 
@@ -87,14 +103,23 @@ def diff_choice(new_window, text_box):
     diff_choice.title("Labyrinth")
     diff_choice.geometry("800x800")
     diff_choice.resizable(0, 0)
-    diff_choice.configure(background='black')
+    imgTemp = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Pict.png")
+    imgTemp_bck = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Lab_bckgrd_01.jpg")
+    img2 = imgTemp.resize((800,800))
+    img3 = imgTemp_bck.resize((400,100))
+    img = ImageTk.PhotoImage(img2)
+    img_back = ImageTk.PhotoImage(img3)
 
-    butt_Easy = tk.Button(diff_choice, text = "Easy!", command=lambda: game(), bg="black", fg="white", font=DIG_FONT_S, borderwidth=0)
-    butt_Easy.grid(row=1, column=1, sticky=tk.N + tk.W +tk.E +tk.S)
-    butt_Medium = tk.Button(diff_choice, text = "Medium!", command=lambda: game(), bg="black", fg="white", font=DIG_FONT_S, borderwidth=0)
-    butt_Medium.grid(row=2, column=1, sticky=tk.N + tk.W +tk.E +tk.S)
-    butt_Hard = tk.Button(diff_choice, text = "Hard!", command=lambda: game(), bg="black", fg="white", font=DIG_FONT_S, borderwidth=0)
-    butt_Hard.grid(row=3, column=1, sticky=tk.N + tk.W +tk.E +tk.S)
+    label = Label(diff_choice,image=img)
+    label.pack(side='top',fill=Y)
+    
+
+    butt_Easy = tk.Button(diff_choice, text = "Easy!", command=lambda: game(),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Easy.place(x = 200, y = 250)
+    butt_Medium = tk.Button(diff_choice, text = "Medium!", command=lambda: game(),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Medium.place(x = 200, y = 350)
+    butt_Hard = tk.Button(diff_choice, text = "Hard!", command=lambda: game(),   image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Hard.place(x = 200, y = 450)
 
 
     diff_choice.mainloop()
@@ -123,12 +148,26 @@ def score_board(root):
     score_board.title("Labyrinth")
     score_board.geometry("800x800")
     score_board.resizable(0, 0)
-    score_board.configure(background='black')
+    imgTemp = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Pict.png")
+    imgTemp_bck = Image.open("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/Lab_bckgrd_01.jpg")
+    img2 = imgTemp.resize((800,800))
+    img3 = imgTemp_bck.resize((400,100))
+    img = ImageTk.PhotoImage(img2)
+    img_back = ImageTk.PhotoImage(img3)
 
+    label = Label(score_board, image=img)
+    label.pack(side='top',fill=Y)
+    
+    
+    butt_Back = tk.Button(score_board, text = "Back!", command=lambda: go_back_from_score_board(score_board),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Back.place(x = 200, y = 697)
+    
+    
+    
     score_table = open("score_board.txt", "r")
     score_read = score_table.readlines()
     score_table.close()
-    
+
     for i in score_read:
         a = i.strip("\n")
         
@@ -142,20 +181,31 @@ def score_board(root):
     table = ttk.Treeview(score_board, columns=("name","status"), show = "headings")
     table.heading("name", text = "Player Name")
     table.heading("status", text = "Win or Lose")
-    table.pack()
-    print(name)
-    print(status)
-
+    table.place(x = 200, y = 0)
+    
     for i in range(len(name)):
         data = (name[i], status[i])
         table.insert(parent = "", index = 0, values = data)
+    
+    
 
-    butt_Back = tk.Button(score_board, text = "Back!", command=lambda: go_back_from_score_board(score_board), bg="black", fg="yellow", font=DIG_FONT_S, borderwidth=0)
-    butt_Back.pack()
+    butt_Back = tk.Button(score_board, text = "Back!", command=lambda: go_back_from_score_board(score_board),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Back.place(x = 200, y = 697)
+
 
     score_board.mainloop()
 
+
+def show_popup():
+    root = tk.Tk()
+    root.withdraw()
     
+    message = "Please, input into the text field your player name!"
+    # Show a pop-up message box
+    messagebox.showinfo("Message", message)
+
+    # Destroy the temporary root window
+    root.destroy()
 
 def execute_game(root):
     print("You exit a game!!!")
