@@ -1,4 +1,7 @@
 import tkinter as tk
+import pygame
+import sys
+import time
 from tkinter import *
 from time import strftime
 from tkinter import ttk
@@ -114,11 +117,11 @@ def diff_choice(new_window, text_box):
     label.pack(side='top',fill=Y)
     
 
-    butt_Easy = tk.Button(diff_choice, text = "Easy!", command=lambda: game(),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Easy = tk.Button(diff_choice, text = "Easy!", command=lambda: game(diff_choice, 60),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
     butt_Easy.place(x = 200, y = 250)
-    butt_Medium = tk.Button(diff_choice, text = "Medium!", command=lambda: game(),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Medium = tk.Button(diff_choice, text = "Medium!", command=lambda: game(diff_choice, 30),  image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
     butt_Medium.place(x = 200, y = 350)
-    butt_Hard = tk.Button(diff_choice, text = "Hard!", command=lambda: game(),   image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
+    butt_Hard = tk.Button(diff_choice, text = "Hard!", command=lambda: game(diff_choice, 10),   image=img_back, compound=tk.CENTER, fg="white", font=DIG_FONT_S, borderwidth=0)
     butt_Hard.place(x = 200, y = 450)
 
 
@@ -132,8 +135,139 @@ def name_Board(text_box):
 
 
 
-def game():
-    pass
+def game(diff_choice, time_df):
+
+    diff_choice.destroy()
+
+    pygame.init()
+    # size of the window and time
+    WIDTH, HEIGHT = 700,600
+    FPS = 30
+
+    # define the background colour
+    grey=(255/3,255/3,255/3)
+    # define the map and checkpoint
+    maze = [
+        '########################',
+        'S $ #                  #',
+        '# # ########### ## ### #',
+        '# #           #  #   # #',
+        '# ########### ###### # #',
+        '# #       # #      # # #',
+        '# # ##### # ###### # # #',
+        '#   #   # #        # # #',
+        '# ### # # ######## # ###',
+        '# #   # # #      # #   #',
+        '# # ### # # #### # ### #',
+        '#   # # #   #    #   # #',
+        '##### # ##### ## ### # #',
+        '#   # #  #  # #  # #   #',
+        '# # #    # ## #### #####',
+        '# #    #    #          #',
+        '# ###### #### ######## #',
+        '# #      #         # # #',
+        '# # ###### ####### # # #',
+        '# # #    # #     # # # #',
+        '#   #  # #   # #     # #',
+        '# ###### ########### # #',
+        '# #           #    # # #',
+        '# ### ####### # #### # #',
+        '#     #     # #      # #',
+        '####### ### # ###### ###',
+        '#   #     # # #    # # #',
+        '# ### ### ### # #### # #',
+        '#       #              E',
+        '########################',
+    ]
+
+    # create a window
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Maze Game")
+
+    # upload the images
+    player_img = pygame.image.load("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/player.png")
+    player_img = pygame.transform.scale(player_img, (20, 20))
+    end_img = pygame.image.load("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/end.png")
+    end_img = pygame.transform.scale(end_img, (20, 20))
+    wall_img = pygame.image.load("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/wall.jpeg")
+    wall_img = pygame.transform.scale(wall_img, (20, 20))
+    checkpoint_img = pygame.image.load("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/checkpoint.png")
+    checkpoint_img = pygame.transform.scale(checkpoint_img, (20, 20))
+    grey_img = pygame.image.load("C:/Users/robin/Desktop/SKOOL/Computer_prog_language/Semestral_Project/images/grey.png")
+    grey_img = pygame.transform.scale(grey_img, (20, 20))
+
+    
+    
+    # clock time
+    clock = pygame.time.Clock()
+
+    # define the starting point
+    player_x, player_y = 0, 20
+
+    # define the exit
+    end_x, end_y = WIDTH-240, HEIGHT-40
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # move the player
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] and player_x > 0 and maze[player_y // 20][player_x // 20 - 1] != "#":
+            if maze[player_y // 20][player_x // 20-1]=='$':
+                checkpoint_img=grey_img
+            player_x -= 20
+        if keys[pygame.K_RIGHT] and player_x < WIDTH - 20 and maze[player_y // 20][player_x // 20 + 1] != "#":
+            if maze[player_y // 20][player_x // 20+1]=='$':
+                checkpoint_img=grey_img
+            player_x += 20
+        if keys[pygame.K_UP] and player_y > 0 and maze[player_y // 20 - 1][player_x // 20] != "#":
+            if maze[player_y // 20-1][player_x // 20]=='$':
+                checkpoint_img=grey_img
+            player_y -= 20
+        if keys[pygame.K_DOWN] and player_y < HEIGHT - 20 and maze[player_y // 20 + 1][player_x // 20] != "#":
+            if maze[player_y // 20+1][player_x // 20]=='$':
+                checkpoint_img=grey_img
+            player_y += 20
+        
+        # meet the checkpoint 
+        
+
+        # show the background
+        screen.fill(grey)
+
+        # make the map
+        for i in range(len(maze)):
+            for j in range(len(maze[i])):
+                if maze[i][j] == "#":
+                    screen.blit(wall_img, (j * 20, i * 20))
+
+        # checkpoint
+        for i in range(len(maze)):
+            for j in range(len(maze[i])):
+                if maze[i][j] == "$":
+                    screen.blit(checkpoint_img, (j * 20, i * 20))
+
+        # show the player and exit
+        screen.blit(player_img, (player_x, player_y))
+        screen.blit(end_img, (end_x, end_y))
+
+        # reach the exit
+        if player_x == end_x and player_y == end_y:
+            print("Congratulations! You won!")
+            running = False
+        
+        
+        pygame.display.flip()
+        clock.tick(FPS)
+
+    pygame.quit()
+    main_page()
+    sys.exit()
+
+    
     
 
 def score_board(root):
