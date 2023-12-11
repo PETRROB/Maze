@@ -1,0 +1,24 @@
+HII!!! THIS IS THE USER_MANUAL FOR THE MAZE...
+
+1). While you run the the game Maze.exe you can see the main window where are buttons like Start, Score Board,
+Manual and Execute the Game.
+
+2). Once you press Start a pop-up window will appear and ask you to enter your player name into the text_window. 
+After you enter the your player name. Please press button NEXT!.
+
+3). Now you can see three buttons: Easy, Medium and Hard. Here please choose what difficulty of the game you want try.
+
+4). You have probably press the button and you are playing. Moving with the character is easy. Just use arrow keyboard
+buttons.
+
+5). Your main goal is to collect all the coins what means checkpoints. After you collect all the checkpoint get
+to the cube called END.
+
+6). Now your game ends and you appear on the Main page. If you want to see your or previous results you need press
+butten called Score Board.
+
+7). If you have closed the manual, you would like to see the manual again press the button Manual.
+
+8). After you will have enough of playing just click on the cross button or Execute game.
+
+THANK YOU AND ENJOY THE GAME!!!!
