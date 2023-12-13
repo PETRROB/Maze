@@ -9,6 +9,8 @@ from tkinter import messagebox
 from time import strftime
 from PIL import ImageTk, Image
 
+import main_page as exec
+
 
 # classyfying fonts
 LARGE_FONT_S = ("Arial", 26, "bold")
@@ -45,7 +47,7 @@ def main_page():
     butt_manual = tk.Button(root, text="MANUAL!", command=lambda: open_manual(),image=img_back, compound=tk.CENTER, fg="white", font=LARGE_FONT_S, borderwidth=0)
     butt_manual.place(x = 200, y = 450)
 
-    butt_exit = tk.Button(root, text="EXECUTE THE GAME!", command=lambda: execute_game(root), image=img_back, compound=tk.CENTER, fg="white", font=LARGE_FONT_S, borderwidth=0)
+    butt_exit = tk.Button(root, text="EXECUTE THE GAME!", command=lambda: exec.execute_game(root), image=img_back, compound=tk.CENTER, fg="white", font=LARGE_FONT_S, borderwidth=0)
     butt_exit.place(x = 200, y = 550)
     
 
@@ -140,7 +142,7 @@ def game(diff_choice, WIDTH, HEIGHT, end_x, end_y, maze, player_x, player_y):
 
     pygame.init()
     # size of the window and time
-    FPS = 30
+    FPS = 15
 
     # define the background colour
     grey=(255/3,255/3,255/3)
@@ -249,10 +251,13 @@ def game(diff_choice, WIDTH, HEIGHT, end_x, end_y, maze, player_x, player_y):
         
         pygame.display.flip()
         clock.tick(FPS)
-    if player_x == end_x and player_y == end_y:
-        name_Board("Win")
-    else:
-        name_Board("Lose")
+    try:
+        if player_x == end_x and player_y == end_y:
+            name_Board("Win")
+        else:
+            raise ValueError
+    except ValueError:
+        name_Board("Lose")  
 
     pygame.quit()
     main_page()
@@ -511,10 +516,7 @@ def show_popup():
 # destroy the temporary root window
     root.destroy()
 
-def execute_game(root):
-    print("You exit a game!!!")
-# close the Tkinter window    
-    root.destroy()  
+ 
 
 def go_back_from_score_board(score_board):
     score_board.destroy()
